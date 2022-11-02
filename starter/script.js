@@ -196,3 +196,20 @@ const checkDogs = function (juliaDogs, kateDogs) {
 checkDogs(juliaDog, kateDog);
 
 ///Data 1: Julia's data [3, 5, 2, 12, 7], Kate's data [4, 1, 15, 8, 3] § Data 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
+////////////////Map to array///////////
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+const euroToUsd = 1.1;
+const usdMovements = movements.map(function (mov) {
+  return mov * euroToUsd;
+});
+const usdMovements1 = movements.map(mov => mov * euroToUsd);
+
+console.log(usdMovements);
+console.log(usdMovements1);
+
+const movementsDescription = movements.map(
+  (mov, i) =>
+    `Movement${i + 1}: You ${mov > 0 ? 'deposit' : 'withdrew'} ${Math.abs(mov)}`
+);
+console.log(movementsDescription);
