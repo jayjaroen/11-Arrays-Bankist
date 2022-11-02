@@ -74,6 +74,20 @@ const displayMovements = function (movements) {
   });
 };
 displayMovements(account1.movements);
+
+const createUserNames = function (accounts) {
+  accounts.forEach(function (account) {
+    /// add username to the accounts array/ modified the array, not returning a new one
+    account.username = account.owner
+      .toLowerCase()
+      .split(' ')
+      .map(str => str[0])
+      .join('');
+  });
+};
+
+createUserNames(accounts);
+console.log(accounts);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -173,43 +187,48 @@ displayMovements(account1.movements);
 ///// Coding Challenge 1 //////
 
 ////// 1. create a checkdog function ///////
-const juliaDog = [3, 5, 2, 12, 7];
-// data2: [9, 16, 6, 8, 3],
+// const juliaDog = [3, 5, 2, 12, 7];
+// // data2: [9, 16, 6, 8, 3],
 
-const kateDog = [4, 1, 15, 8, 3];
-// data2: [10, 5, 6, 1, 4],
-const checkDogs = function (juliaDogs, kateDogs) {
-  const juliaCorrect = juliaDogs.slice(1, -2);
-  console.log(juliaCorrect);
-  const dogs = juliaCorrect.concat(kateDogs);
-  console.log(dogs);
-  dogs.forEach(function (value, index) {
-    value >= 3
-      ? console.log(
-          `Dog number ${index + 1} is an adult and is ${value} years old`
-        )
-      : console.log(
-          `Dog number ${index + 1} is an puppy and is ${value} years old`
-        );
-  });
-};
-checkDogs(juliaDog, kateDog);
+// const kateDog = [4, 1, 15, 8, 3];
+// // data2: [10, 5, 6, 1, 4],
+// const checkDogs = function (juliaDogs, kateDogs) {
+//   const juliaCorrect = juliaDogs.slice(1, -2);
+//   console.log(juliaCorrect);
+//   const dogs = juliaCorrect.concat(kateDogs);
+//   console.log(dogs);
+//   dogs.forEach(function (value, index) {
+//     value >= 3
+//       ? console.log(
+//           `Dog number ${index + 1} is an adult and is ${value} years old`
+//         )
+//       : console.log(
+//           `Dog number ${index + 1} is an puppy and is ${value} years old`
+//         );
+//   });
+// };
+// checkDogs(juliaDog, kateDog);
 
-///Data 1: Julia's data [3, 5, 2, 12, 7], Kate's data [4, 1, 15, 8, 3] § Data 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
-////////////////Map to array///////////
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// ///Data 1: Julia's data [3, 5, 2, 12, 7], Kate's data [4, 1, 15, 8, 3] § Data 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
+// ////////////////Map to array///////////
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
-const euroToUsd = 1.1;
-const usdMovements = movements.map(function (mov) {
-  return mov * euroToUsd;
-});
-const usdMovements1 = movements.map(mov => mov * euroToUsd);
+// const euroToUsd = 1.1;
+// const usdMovements = movements.map(function (mov) {
+//   return mov * euroToUsd;
+// });
+// const usdMovements1 = movements.map(mov => mov * euroToUsd);
 
-console.log(usdMovements);
-console.log(usdMovements1);
+// //// different paradigm from map method, map using the function to solve the problem
+// const usdMovementFor = [];
+// for (const mov of movements) usdMovementFor.push(mov * euroToUsd);
+// console.log(usdMovementFor);
 
-const movementsDescription = movements.map(
-  (mov, i) =>
-    `Movement${i + 1}: You ${mov > 0 ? 'deposit' : 'withdrew'} ${Math.abs(mov)}`
-);
-console.log(movementsDescription);
+// console.log(usdMovements);
+// console.log(usdMovements1);
+
+// const movementsDescription = movements.map(
+//   (mov, i) =>
+//     `Movement${i + 1}: You ${mov > 0 ? 'deposit' : 'withdrew'} ${Math.abs(mov)}`
+// );
+// console.log(movementsDescription);
