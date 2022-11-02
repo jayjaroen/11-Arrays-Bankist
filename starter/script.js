@@ -169,3 +169,30 @@ displayMovements(account1.movements);
 // });
 
 // /// _ underscroll in JS means throw away variable
+
+///// Coding Challenge 1 //////
+
+////// 1. create a checkdog function ///////
+const juliaDog = [3, 5, 2, 12, 7];
+// data2: [9, 16, 6, 8, 3],
+
+const kateDog = [4, 1, 15, 8, 3];
+// data2: [10, 5, 6, 1, 4],
+const checkDogs = function (juliaDogs, kateDogs) {
+  const juliaCorrect = juliaDogs.slice(1, -2);
+  console.log(juliaCorrect);
+  const dogs = juliaCorrect.concat(kateDogs);
+  console.log(dogs);
+  dogs.forEach(function (value, index) {
+    value >= 3
+      ? console.log(
+          `Dog number ${index + 1} is an adult and is ${value} years old`
+        )
+      : console.log(
+          `Dog number ${index + 1} is an puppy and is ${value} years old`
+        );
+  });
+};
+checkDogs(juliaDog, kateDog);
+
+///Data 1: Julia's data [3, 5, 2, 12, 7], Kate's data [4, 1, 15, 8, 3] § Data 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
