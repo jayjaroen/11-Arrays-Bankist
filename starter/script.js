@@ -88,6 +88,14 @@ const createUserNames = function (accounts) {
 
 createUserNames(accounts);
 console.log(accounts);
+
+const calcPrintBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
+
+calcPrintBalance(account1.movements);
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -99,7 +107,7 @@ console.log(accounts);
 // ]);
 
 // //////////// Note from the lecture//////////////////
-// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
@@ -232,3 +240,45 @@ console.log(accounts);
 //     `Movement${i + 1}: You ${mov > 0 ? 'deposit' : 'withdrew'} ${Math.abs(mov)}`
 // );
 // console.log(movementsDescription);
+
+///////// filter function /////////////////////
+const deposit = movements.filter(function (mov) {
+  return mov > 0; /// if it's true pass into an array
+});
+
+const depositFor = [];
+for (const mov of movements) if (mov > 0) depositFor.push(mov);
+console.log(depositFor);
+
+const withdraw = movements.filter(mov => mov < 0);
+const withdrawFor = [];
+for (const mov of movements) if (mov < 0) withdrawFor.push(mov);
+console.log(withdrawFor);
+
+console.log(deposit);
+console.log(withdraw);
+/////////////////////// reduce method /////////////////////
+/////accomulator - snowballing of the current element
+
+const balance = movements.reduce(function (acc, mov, i, arr) {
+  console.log(`Movement ${i}: balance ${acc}`);
+  return acc + mov;
+}, 0);
+///// second argument of the reduce method, 0 here is the initial value of the accumlator of the first loop iteration
+
+console.log(balance);
+
+const balanceArrow = movements.reduce((acc, mov) => acc + mov, 0);
+console.log(balanceArrow);
+
+let sum = 0;
+for (const mov of movements) sum += mov;
+console.log(sum);
+
+/////// reduce method to get a maximum value //////
+
+const maximumValue = movements.reduce(
+  (acc, mov) => (acc > mov ? acc : mov),
+  movements[0]
+);
+console.log(maximumValue);
