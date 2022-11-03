@@ -87,7 +87,7 @@ const createUserNames = function (accounts) {
 };
 
 createUserNames(accounts);
-console.log(accounts);
+// console.log(accounts);
 
 const calcPrintBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => acc + mov, 0);
@@ -218,7 +218,7 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // checkDogs(juliaDog, kateDog);
 
 // ///Data 1: Julia's data [3, 5, 2, 12, 7], Kate's data [4, 1, 15, 8, 3] § Data 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
-// ////////////////Map to array///////////
+// ////////////////NOTEMap to array///////////
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 // const euroToUsd = 1.1;
@@ -241,44 +241,62 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // );
 // console.log(movementsDescription);
 
-///////// filter function /////////////////////
-const deposit = movements.filter(function (mov) {
-  return mov > 0; /// if it's true pass into an array
-});
+/////////NOTE filter function /////////////////////
+// const deposit = movements.filter(function (mov) {
+//   return mov > 0; /// if it's true pass into an array
+// });
 
-const depositFor = [];
-for (const mov of movements) if (mov > 0) depositFor.push(mov);
-console.log(depositFor);
+// const depositFor = [];
+// for (const mov of movements) if (mov > 0) depositFor.push(mov);
+// console.log(depositFor);
 
-const withdraw = movements.filter(mov => mov < 0);
-const withdrawFor = [];
-for (const mov of movements) if (mov < 0) withdrawFor.push(mov);
-console.log(withdrawFor);
+// const withdraw = movements.filter(mov => mov < 0);
+// const withdrawFor = [];
+// for (const mov of movements) if (mov < 0) withdrawFor.push(mov);
+// console.log(withdrawFor);
 
-console.log(deposit);
-console.log(withdraw);
-/////////////////////// reduce method /////////////////////
-/////accomulator - snowballing of the current element
+// console.log(deposit);
+// console.log(withdraw);
+// ///////////////////////NOTE reduce method /////////////////////
+// /////accomulator - snowballing of the current element
 
-const balance = movements.reduce(function (acc, mov, i, arr) {
-  console.log(`Movement ${i}: balance ${acc}`);
-  return acc + mov;
-}, 0);
-///// second argument of the reduce method, 0 here is the initial value of the accumlator of the first loop iteration
+// const balance = movements.reduce(function (acc, mov, i, arr) {
+//   console.log(`Movement ${i}: balance ${acc}`);
+//   return acc + mov;
+// }, 0);
+// ///// second argument of the reduce method, 0 here is the initial value of the accumlator of the first loop iteration
 
-console.log(balance);
+// console.log(balance);
 
-const balanceArrow = movements.reduce((acc, mov) => acc + mov, 0);
-console.log(balanceArrow);
+// const balanceArrow = movements.reduce((acc, mov) => acc + mov, 0);
+// console.log(balanceArrow);
 
-let sum = 0;
-for (const mov of movements) sum += mov;
-console.log(sum);
+// let sum = 0;
+// for (const mov of movements) sum += mov;
+// console.log(sum);
 
-/////// reduce method to get a maximum value //////
+// /////// reduce method to get a maximum value //////
 
-const maximumValue = movements.reduce(
-  (acc, mov) => (acc > mov ? acc : mov),
-  movements[0]
-);
-console.log(maximumValue);
+// const maximumValue = movements.reduce(
+//   (acc, mov) => (acc > mov ? acc : mov),
+//   movements[0]
+// );
+// console.log(maximumValue);
+
+///// Coding challenge 2 : practing map, fiter and reduce methods/////////
+const calcAverageHumanAge = function (dogAges) {
+  const humanAgeDog = dogAges.map(function (age) {
+    return age <= 2 ? age * 2 : 16 + age * 4;
+  });
+  console.log(humanAgeDog);
+  const adultDog = humanAgeDog.filter(age => age >= 18);
+  console.log(adultDog);
+  const averAdultDog =
+    // adultDog.reduce((acc, age) => (acc += age), 0) / adultDog.length;
+    /// NOTE alernative way of calculating average
+    /// (2 +3)/2 = 2.5 === 2/2+3/2= 2.5 same logic as below
+    adultDog.reduce((acc, age, i, arr) => (acc += age / arr.length), 0);
+  return averAdultDog;
+};
+console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]));
+console.log(calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]));
