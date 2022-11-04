@@ -67,7 +67,7 @@ const displayMovements = function (movements) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
    <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-   <div class="movements__value">${mov}</div>
+   <div class="movements__value">${mov}€</div>
  </div>
    `;
     containerMovements.insertAdjacentHTML('afterbegin', html); // take two agruments(the style and the thing that we want to insert)
@@ -75,6 +75,35 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
+const calcPrintBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance} €`;
+};
+calcPrintBalance(account1.movements);
+
+const calcDisplaySummary = function (movements) {
+  const income = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => (acc += mov), 0);
+  labelSumIn.textContent = `${income}€`;
+
+  const withdraw = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => (acc += mov), 0);
+  // console.log(withdraw);
+  labelSumOut.textContent = `${Math.abs(withdraw)}€`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter((interest, i, arr) => {
+      console.log(arr);
+      return interest >= 1;
+    })
+    .reduce((acc, interest) => (acc += interest), 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+calcDisplaySummary(account1.movements);
 const createUserNames = function (accounts) {
   accounts.forEach(function (account) {
     /// add username to the accounts array/ modified the array, not returning a new one
@@ -85,16 +114,8 @@ const createUserNames = function (accounts) {
       .join('');
   });
 };
-
 createUserNames(accounts);
 // console.log(accounts);
-
-const calcPrintBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} EUR`;
-};
-
-calcPrintBalance(account1.movements);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -300,3 +321,27 @@ const calcAverageHumanAge = function (dogAges) {
 };
 console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]));
 console.log(calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]));
+
+/////////// channing method ////////////////////////
+const euroToUsd = 1.1;
+const totalDeposit = movements
+  .filter(mov => mov > 0)
+  .map(
+    (mov, i, arr) =>
+      // console.log(arr);
+      mov * euroToUsd
+  )
+  // .map(mov => mov * euroToUsd)
+  .reduce((arr, mov) => (arr += mov), 0);
+console.log(totalDeposit);
+
+/////////////// coding challenge 3 - chaining method //////
+const calcAverageHumanAge2 = dogAges => {
+  const averAdultDog2 = dogAges
+    .map(age => (age <= 2 ? age * 2 : 16 + age * 4))
+    .filter(age => age >= 18)
+    .reduce((acc, age, i, arr) => (acc += age / arr.length), 0);
+  return averAdultDog2;
+};
+console.log(calcAverageHumanAge2([5, 2, 4, 1, 15, 8, 3]));
+console.log(calcAverageHumanAge2([16, 6, 10, 5, 6, 1, 4]));
