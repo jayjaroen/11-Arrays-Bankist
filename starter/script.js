@@ -475,3 +475,28 @@ const deposit = mov => mov > 0;
 console.log(movements.some(deposit));
 console.log(movements.every(deposit));
 console.log(movements.filter(deposit));
+
+//// NOTE Flat and Flatmap method //////
+///// introduced in ES2019 /////////
+
+//Flat combine the nested array, can go deeper into one level -- default is at 1
+//Flatmap can create a new map array and combine at only one level
+
+console.log([2, 3, 4, 5, 6, [3, 4, 5]].flat());
+console.log([2, [3, [4, 5], 6], [3, [4, 5]]].flat(2));
+
+////flat method ////////
+const totalBalanceAllAcc = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .reduce((accum, mov) => accum + mov, 0);
+console.log(totalBalanceAllAcc);
+
+////flatMap ///////////
+
+const totalBalanceAllAcc2 = accounts
+  .flatMap(acc => acc.movements) /// map method but in the end flatten the result
+  .reduce((accum, mov) => accum + mov, 0);
+console.log(totalBalanceAllAcc2);
+
+/// quite common to use map and then flatten the operation is pretty common
