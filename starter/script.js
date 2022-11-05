@@ -177,6 +177,20 @@ btnTransfer.addEventListener('click', function (e) {
   }
 });
 
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    /// add the movement
+    currentAccount.movements.push(amount);
+
+    /////update the UI
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+});
+
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -208,7 +222,7 @@ btnClose.addEventListener('click', function (e) {
 // ]);
 
 // //////////// Note from the lecture//////////////////
-// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
@@ -443,3 +457,21 @@ btnClose.addEventListener('click', function (e) {
 // console.log(accountFor);
 
 // /// NOTE optional chaining ?
+
+////NOTE some and every method
+console.log(movements);
+console.log(movements.includes(-130)); // equality
+
+const anyDeposit1 = movements.some(mov => mov > 0); /// function
+console.log(anyDeposit1);
+/// return Boolean value
+
+///// Every method - every element in the arry satify the condition
+///// return a boolean value
+console.log(account4.movements.every(mov => mov > 0));
+
+//// separate callback function
+const deposit = mov => mov > 0;
+console.log(movements.some(deposit));
+console.log(movements.every(deposit));
+console.log(movements.filter(deposit));
