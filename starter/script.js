@@ -61,9 +61,11 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = ''; /// start with empty value
-  movements.forEach(function (mov, i) {
+  //// need to use slice() method first, otherwise the sort method will sort the original array
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
    <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
@@ -211,6 +213,13 @@ btnClose.addEventListener('click', function (e) {
   inputClosePin.value = inputCloseUsername.value = '';
 });
 
+let sorted = false;
+// state variable to see if we sorted the array or not
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted; // change the state,
+});
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -500,3 +509,201 @@ const totalBalanceAllAcc2 = accounts
 console.log(totalBalanceAllAcc2);
 
 /// quite common to use map and then flatten the operation is pretty common
+
+///////////// Sort method ///////////////////
+/// sort the string ////////
+const friends = ['freen', 'becky', 'bonbon'];
+console.log(friends.sort());
+/// mutate the original array ////
+
+/// compare callback function //////
+///.sort(a,b) === current value, b === next value
+//// if return < 0 / a,b (keep order)
+///// if return > 0 / b,a (swith order)
+//// ascending/////
+movements.sort((a, b) => a - b); /// same as below
+// movements.sort((a, b) => {
+//   if (a > b) return 1;
+//   if (b > a) return -1;
+// });
+console.log(movements);
+
+//// descending
+movements.sort((a, b) => b - a);
+// movements.sort((a, b) => {
+//   if (a > b) return -1;
+//   if (b > a) return 1;
+// });
+
+console.log(movements);
+console.log([1, 2, 3, 4, 94, -3].sort((a, b) => b - a));
+
+//////// Creating and filling the array ////////////
+
+const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+///// new Array(7) create
+const arr1 = new Array(7);
+console.log(arr1);
+////// fill method to fill the array, it mutates the array.
+////// the first argument is that value that you want to fill in
+////// the second & third argument is the staring and end value
+arr1.fill(1, 3, 5);
+console.log(arr1);
+
+//// Array.from (///.from using it on an array constructor / calling the from method on the array function)
+const arr2 = Array.from({ length: 8 }, () => 2);
+console.log(arr2);
+
+const arr3 = Array.from({ length: 8 }, (_, i) => i + 1);
+console.log(arr3);
+
+labelBalance.addEventListener('click', function () {
+  const movementsUI = Array.from(
+    document.querySelectorAll('.movements__value'),
+    el => Number(el.textContent.replace('€', ''))
+  );
+  console.log(movementsUI);
+  /// Array from, can covert the text as a second function agrgument
+  // console.log(movementsUI.map(el => Number(el.textContent.replace('€', ''))));
+  /// can also do spread operator with the map method
+  const movementsUI2 = [...document.querySelectorAll('.movements__value')];
+  console.log(movementsUI2);
+});
+
+//////// Array practice ///////////
+////Excercise 1
+const bankDeposit = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov > 0)
+  .reduce((sum, mov) => sum + mov, 0);
+
+console.log(bankDeposit);
+///// Excercise 2
+// const countDeposit1000 = accounts
+//   .flatMap(acc => acc.movements)
+//   .filter(mov => mov >= 1000).length;
+// console.log(countDeposit1000);
+
+const countDeposit10002 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((count, cur) => (cur >= 1000 ? ++count : count), 0);
+// .reduce((count, cur) => (cur >= 1000 ? count + 1 : count), 0);
+//// can use reduce method to count something in an array
+console.log(countDeposit10002);
+
+let a = 10;
+console.log(a++); /// return 10 / return the before value
+console.log(a); //// return 11
+console.log(++a); /// return 12 /// prefix ++ operator
+
+///// Exercise 3
+const { deposit1, withdraw } = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (sums, mov) => {
+      // mov > 0 ? (sums.deposit1 += mov) : (sums.withdraw += mov);
+      sums[mov > 0 ? 'deposit1' : 'withdraw'] += mov;
+      return sums;
+    },
+    { deposit1: 0, withdraw: 0 }
+  );
+console.log(deposit1, withdraw);
+
+////// Excercise 4 //////
+const convertTitleCase = function (title) {
+  const exceptions = ['a', 'love', 'the', 'an', 'in'];
+  const capitalize = str => str[0].toUpperCase() + str.slice(1);
+  const caseTitle = title
+    .toLowerCase()
+    .split(' ')
+    .map(word => (exceptions.includes(word) ? word : capitalize(word)))
+    .join(' ');
+  return capitalize(caseTitle);
+};
+console.log(convertTitleCase('I love coding in the garden'));
+
+//////// Coding Challenge 4 ///////////
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] },
+];
+
+// Q1 adding recommended food option into a dog array
+// adding a property in to dog object
+/// mutate the array
+dogs.forEach(
+  dog => (dog.recommendedFood = Math.trunc(dog.weight ** 0.75 * 28))
+);
+console.log(dogs);
+
+////// Q2 Find Sarah dog and see if her dog eat too much or too little
+///NOTE what is the different between FIND & Filter
+const sarahDog = dogs.find(dog => dog.owners.includes('Sarah'));
+console.log(sarahDog.curFood);
+console.log(
+  `Sarah's dog is eating ${
+    sarahDog.curFood > sarahDog.recommendedFood ? 'much' : 'little'
+  }`
+);
+//// The below method works for filter ////////
+// const see = sarahDog.forEach(key => {
+//   console.log(key.curFood, key.recommendedFood);
+//   if (
+//     key.curFood > key.recommendedFood * 0.9 &&
+//     key.curFood < key.recommendedFood * 1.1
+//   ) {
+//     console.log(`The dog dietary is balance`);
+//   }
+//   if (key.curFood > key.recommendedFood * 0.91) {
+//     console.log(`The dog eats too much`);
+//   }
+//   if (key.curFood < key.recommendedFood * 1.2) {
+//     console.log(`The dog eats too little`);
+//   }
+// });
+
+///// Q3 Create an array for an owner of dogs that eat too much and dogs that eats too little
+const ownerEatTooMuch = dogs
+  .filter(dog => dog.curFood > dog.recommendedFood)
+  .flatMap(dog => dog.owners);
+
+console.log(ownerEatTooMuch);
+
+const ownerEatTooLittle = dogs
+  .filter(dog => dog.curFood < dog.recommendedFood)
+  .flatMap(dog => dog.owners);
+console.log(ownerEatTooLittle);
+
+/////// Q4 log the array of the two owner in the the console //////
+///replace()
+console.log(`${ownerEatTooMuch.join(' and ')}'s dogs eat too much`);
+
+console.log(
+  `${ownerEatTooLittle
+    .join(' ')
+    .replaceAll(' ', ' and ')}'s dogs eat too little`
+);
+
+////////Q5 log to the console if there is any dog eat the same amount of the recommended food?
+const sameAmount = dogs.some(dog => dog.curFood === dog.recommendedFood);
+console.log(sameAmount);
+
+//////// Q6 log to the console if there is any dog eat an OK amount of food ///////
+const okAmount = dog =>
+  dog.curFood > dog.recommendedFood * 0.9 &&
+  dog.curFood < dog.recommendedFood * 1.1;
+/// save to the function
+console.log(dogs.some(okAmount));
+
+///////Q7 create an array of dogs that eat an OK amount
+const dogOkAmount = dogs.filter(okAmount);
+console.log(dogOkAmount);
+
+///////Q8 create a shallow of copy of dogs and sort the recommendedfood in ascending order )
+//// answer
+const dogsCopy = dogs
+  .slice()
+  .sort((a, b) => a.recommendedFood - b.recommendedFood);
+console.log(dogsCopy);
